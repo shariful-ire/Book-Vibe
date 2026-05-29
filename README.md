@@ -1,16 +1,34 @@
-# React + Vite
+# 📚 Book-Vibe React Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+এটি একটি React-ভিত্তিক ওয়েব অ্যাপ্লিকেশন যেখানে বই সম্পর্কিত তথ্য দেখা যায়। প্রকল্পটি তৈরি করতে গিয়ে React Router, কম্পোনেন্ট আর্কিটেকচার এবং বিভিন্ন সমস্যার সমাধানের অভিজ্ঞতা নথিভুক্ত করা হলো।
 
-Currently, two official plugins are available:
+---
+# React Router DOM (পেজ নেভিগেশনের জন্য)
+npm install react-router-dom
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# Tailwind CSS (ডিজাইনের জন্য - ঐচ্ছিক)
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
 
-## React Compiler
+🧩 প্রোজেক্ট স্ট্রাকচার
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Book-Vibe/
+├── src/
+│   ├── Components/
+│   │   ├── NavBar/
+│   │   │   └── NavBar.jsx
+│   │   ├── FooterSection/
+│   │   │   └── Footer.jsx
+│   │   └── UserStatus/
+│   │       ├── SignIn/
+│   │       │   └── SignIn.jsx
+│   │       └── SignUp/
+│   │           └── SignUp.jsx
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── public/
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
