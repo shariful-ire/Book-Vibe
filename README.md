@@ -10,7 +10,7 @@ npm install react-router-dom
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 
-🧩 প্রোজেক্ট স্ট্রাকচার
+🧩 Project structure
 
 Book-Vibe/
 ├── src/

@@ -30,9 +30,9 @@ const NavBar = () => {
         </div>
         
         {/* navbar-end অংশ আনকমেন্ট করুন */}
-        <div className="navbar-end">
-          <Link to="/signin">SignIn</Link>   
-          <Link to="/signup">SignUp</Link>   
+        <div className="navbar-end gap-4 ">
+          <Link to="/signin" className=' btn btn-accent'>SignIn</Link>   
+          <Link to="/signup" className=' btn btn-success'>SignUp</Link>   
         </div>
       </div>
     </div>
