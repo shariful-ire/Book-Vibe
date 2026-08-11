@@ -12,13 +12,10 @@ const NavBar = () => {
   return (
     <div className="sticky top-0 z-50">
       <div className="navbar border-b border-gray-200 bg-white/95 px-4 shadow-sm backdrop-blur-md lg:px-8">
-
         {/* ================= Navbar Start ================= */}
         <div className="navbar-start">
-
           {/* Mobile Menu */}
           <div className="dropdown">
-
             <div
               tabIndex={0}
               role="button"
@@ -72,10 +69,7 @@ const NavBar = () => {
               </li>
 
               <li>
-                <NavLink
-                  to="/pages-to-read"
-                  className={navLinkClass}
-                >
+                <NavLink to="/pages-to-read" className={navLinkClass}>
                   PAGES TO READ
                 </NavLink>
               </li>
@@ -93,12 +87,9 @@ const NavBar = () => {
           </Link>
         </div>
 
-
         {/* ================= Desktop Navigation ================= */}
         <div className="navbar-center hidden lg:flex">
-
           <ul className="menu menu-horizontal items-center gap-2 px-1">
-
             <li>
               <NavLink to="/" className={navLinkClass}>
                 HOME
@@ -112,22 +103,15 @@ const NavBar = () => {
             </li>
 
             <li>
-              <NavLink
-                to="/pages-to-read"
-                className={navLinkClass}
-              >
+              <NavLink to="/pages-to-read" className={navLinkClass}>
                 PAGES TO READ
               </NavLink>
             </li>
-
           </ul>
-
         </div>
-
 
         {/* ================= Navbar End ================= */}
         <div className="navbar-end gap-2">
-
           <Link
             to="/signin"
             className="
@@ -166,9 +150,7 @@ const NavBar = () => {
           >
             Sign Up
           </Link>
-
         </div>
-
       </div>
     </div>
   );
