@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Login from '../UserStatus/logIn/Login';
+import Login from '../UserStatus/LogIn/Login';
 
 const Hero = () => {
     return (
