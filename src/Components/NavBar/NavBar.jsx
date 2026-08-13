@@ -1,7 +1,20 @@
 import React from "react";
+
 import { Link, NavLink } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext.jsx";
+
 const NavBar = () => {
+  // ==========================================
+  // Auth
+  // ==========================================
+
+  const { user, logout } = useAuth();
+
+  // ==========================================
+  // Navigation Links
+  // ==========================================
+
   const navLinks = [
     {
       name: "HOME",
@@ -17,19 +30,36 @@ const NavBar = () => {
     },
   ];
 
+  // ==========================================
+  // NavLink Style
+  // ==========================================
+
   const navLinkClass = ({ isActive }) =>
-    `rounded-xl px-4 py-2 font-medium transition-all duration-200 ${
-      isActive
-        ? "bg-amber-400 text-gray-900"
-        : "text-gray-700 hover:bg-amber-100 hover:text-gray-900"
-    }`;
+    `
+      rounded-xl
+      px-4
+      py-2
+      font-medium
+      transition-all
+      duration-200
+
+      ${
+        isActive
+          ? "bg-amber-400 text-gray-900"
+          : "text-gray-700 hover:bg-amber-100 hover:text-gray-900"
+      }
+    `;
 
   return (
     <div className="sticky top-0 z-50">
       <div className="navbar border-b border-gray-200 bg-white/95 px-4 shadow-sm backdrop-blur-md lg:px-8">
-        {/* ================= Navbar Start ================= */}
+        {/* =====================================
+            NAVBAR START
+        ===================================== */}
+
         <div className="navbar-start">
-          {/* Mobile Menu */}
+          {/* MOBILE MENU */}
+
           <div className="dropdown lg:hidden">
             <div tabIndex={0} role="button" className="btn btn-ghost mr-2">
               <svg
@@ -48,7 +78,8 @@ const NavBar = () => {
               </svg>
             </div>
 
-            {/* Mobile Navigation */}
+            {/* MOBILE NAVIGATION */}
+
             <ul
               tabIndex={0}
               className="
@@ -77,18 +108,30 @@ const NavBar = () => {
             </ul>
           </div>
 
-          {/* Logo */}
+          {/* LOGO */}
+
           <Link
             to="/"
-            className="btn btn-ghost px-2 text-2xl font-bold normal-case"
+            className="
+              btn
+              btn-ghost
+              px-2
+              text-2xl
+              font-bold
+              normal-case
+            "
           >
             <span className="text-gray-900">
-              Book<span className="text-amber-500">Vibe</span>
+              Book
+              <span className="text-amber-500">Vibe</span>
             </span>
           </Link>
         </div>
 
-        {/* ================= Desktop Navigation ================= */}
+        {/* =====================================
+            DESKTOP NAVIGATION
+        ===================================== */}
+
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal items-center gap-2 px-1">
             {navLinks.map((link) => (
@@ -101,48 +144,94 @@ const NavBar = () => {
           </ul>
         </div>
 
-        {/* ================= Navbar End ================= */}
-        <div className="navbar-end gap-2">
-          {/* Sign In */}
-          <Link
-            to="/signin"
-            className="
-              rounded-xl
-              border
-              border-gray-900
-              px-4
-              py-2
-              text-sm
-              font-semibold
-              text-gray-900
-              transition-all
-              duration-200
-              hover:bg-gray-900
-              hover:text-white
-            "
-          >
-            Sign In
-          </Link>
+        {/* =====================================
+            NAVBAR END
+        ===================================== */}
 
-          {/* Sign Up */}
-          <Link
-            to="/signup"
-            className="
-              rounded-xl
-              bg-amber-400
-              px-4
-              py-2
-              text-sm
-              font-semibold
-              text-gray-900
-              transition-all
-              duration-200
-              hover:bg-amber-300
-              hover:shadow-md
-            "
-          >
-            Sign Up
-          </Link>
+        <div className="navbar-end gap-2">
+          {/* ===================================
+              LOGGED IN
+          =================================== */}
+
+          {user ? (
+            <>
+              {/* USER NAME */}
+
+              <span className="hidden text-sm font-semibold text-gray-700 md:block">
+                Hi, {user.name}
+              </span>
+
+              {/* LOGOUT */}
+
+              <button
+                onClick={logout}
+                className="
+                  rounded-xl
+                  bg-red-500
+                  px-4
+                  py-2
+                  text-sm
+                  font-semibold
+                  text-white
+                  transition-all
+                  duration-200
+                  hover:bg-red-600
+                  hover:shadow-md
+                "
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            /* =================================
+               LOGGED OUT
+            ================================= */
+
+            <>
+              {/* SIGN IN */}
+
+              <Link
+                to="/signin"
+                className="
+                  rounded-xl
+                  border
+                  border-gray-900
+                  px-4
+                  py-2
+                  text-sm
+                  font-semibold
+                  text-gray-900
+                  transition-all
+                  duration-200
+                  hover:bg-gray-900
+                  hover:text-white
+                "
+              >
+                Sign In
+              </Link>
+
+              {/* SIGN UP */}
+
+              <Link
+                to="/signup"
+                className="
+                  rounded-xl
+                  bg-cyan-500
+                  px-4
+                  py-2
+                  text-sm
+                  font-semibold
+                  text-white
+                  transition-all
+                  duration-200
+                  hover:bg-cyan-600
+                  hover:shadow-md
+                "
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

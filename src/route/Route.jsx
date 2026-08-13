@@ -9,6 +9,9 @@ import PagesToRead from "../pages/pages-to-read/PagesToRead";
 
 import BookDetails from "../components/book/bookDetails/BookDetails";
 
+import SignIn from "../components/userStatus/signIn/SignIn";
+import SignUp from "../components/userStatus/singUp/SignUp";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,42 +21,59 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
 
     children: [
-
-      // ================= HOME =================
+      // =========================
+      // HOME
+      // =========================
 
       {
         index: true,
         element: <HomePage />,
       },
 
-      // ================= LISTED BOOKS =================
+      // =========================
+      // LISTED BOOKS
+      // =========================
 
       {
         path: "listed-books",
         element: <ListedBooks />,
       },
 
-      // ================= PAGES TO READ =================
+      // =========================
+      // PAGES TO READ
+      // =========================
 
       {
         path: "pages-to-read",
         element: <PagesToRead />,
       },
 
-      // ================= BOOK DETAILS =================
+      // =========================
+      // BOOK DETAILS
+      // =========================
 
       {
         path: "book/:bookId",
         element: <BookDetails />,
       },
 
-      // ================= 404 =================
+      // =========================
+      // SIGN IN
+      // =========================
 
       {
-        path: "*",
-        element: <ErrorPage />,
+        path: "signin",
+        element: <SignIn />,
       },
 
+      // =========================
+      // SIGN UP
+      // =========================
+
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
     ],
   },
 ]);

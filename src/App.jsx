@@ -11,6 +11,7 @@ const App = () => {
       <NavBar />
 
       <main className="mx-auto w-11/12 max-w-6xl">
+
         <Suspense
           fallback={
             <div className="flex min-h-[400px] items-center justify-center">
@@ -22,6 +23,7 @@ const App = () => {
         >
           <Outlet />
         </Suspense>
+
       </main>
 
       <Footer />
