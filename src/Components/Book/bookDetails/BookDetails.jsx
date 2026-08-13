@@ -1,79 +1,62 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const BookDetails = () => {
   const { bookId } = useParams();
+  const navigate = useNavigate();
 
   const [book, setBook] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const [isListed, setIsListed] = useState(false);
   const [isRead, setIsRead] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+
+  // =====================================================
+  // Fetch book
+  // =====================================================
 
   useEffect(() => {
     fetch("/data/booksData.json")
       .then((res) => res.json())
       .then((data) => {
-        const foundBook = data.find(
+        const selectedBook = data.find(
           (item) => String(item.bookId) === String(bookId)
         );
 
-        setBook(foundBook);
-        setLoading(false);
-
-        // Check localStorage
-        const listedBooks =
-          JSON.parse(localStorage.getItem("listedBooks")) || [];
-
-        const readBooks =
-          JSON.parse(localStorage.getItem("readBooks")) || [];
-
-        setIsListed(
-          listedBooks.some(
-            (item) => String(item.bookId) === String(bookId)
-          )
-        );
-
-        setIsRead(
-          readBooks.some(
-            (item) => String(item.bookId) === String(bookId)
-          )
-        );
-      })
-      .catch(() => {
-        setLoading(false);
+        setBook(selectedBook);
       });
   }, [bookId]);
 
-  // -------------------------
-  // Add to Listed Books
-  // -------------------------
-  const handleAddToListed = () => {
-    const listedBooks =
-      JSON.parse(localStorage.getItem("listedBooks")) || [];
+  // =====================================================
+  // Check localStorage status
+  // =====================================================
 
-    const alreadyExists = listedBooks.some(
+  useEffect(() => {
+    if (!book) return;
+
+    const readBooks =
+      JSON.parse(localStorage.getItem("readBooks")) || [];
+
+    const wishlist =
+      JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    const alreadyRead = readBooks.some(
       (item) => String(item.bookId) === String(book.bookId)
     );
 
-    if (alreadyExists) {
-      return;
-    }
-
-    const updatedBooks = [...listedBooks, book];
-
-    localStorage.setItem(
-      "listedBooks",
-      JSON.stringify(updatedBooks)
+    const alreadyWishlisted = wishlist.some(
+      (item) => String(item.bookId) === String(book.bookId)
     );
 
-    setIsListed(true);
-  };
+    setIsRead(alreadyRead);
+    setIsWishlisted(alreadyWishlisted);
+  }, [book]);
 
-  // -------------------------
-  // Mark as Read
-  // -------------------------
-  const handleMarkAsRead = () => {
+  // =====================================================
+  // READ BOOK TOGGLE
+  // =====================================================
+
+  const handleReadBook = () => {
+    if (!book) return;
+
     const readBooks =
       JSON.parse(localStorage.getItem("readBooks")) || [];
 
@@ -81,162 +64,211 @@ const BookDetails = () => {
       (item) => String(item.bookId) === String(book.bookId)
     );
 
-    if (alreadyRead) {
-      return;
-    }
+    let updatedBooks;
 
-    const updatedBooks = [...readBooks, book];
+    if (alreadyRead) {
+      // REMOVE FROM READ BOOKS
+      updatedBooks = readBooks.filter(
+        (item) => String(item.bookId) !== String(book.bookId)
+      );
+
+      setIsRead(false);
+    } else {
+      // ADD TO READ BOOKS
+      updatedBooks = [...readBooks, book];
+
+      setIsRead(true);
+    }
 
     localStorage.setItem(
       "readBooks",
       JSON.stringify(updatedBooks)
     );
-
-    setIsRead(true);
   };
 
-  if (loading) {
-    return (
-      <div className="flex min-h-[500px] items-center justify-center">
-        <p className="text-lg text-gray-500">
-          Loading book...
-        </p>
-      </div>
+  // =====================================================
+  // WISHLIST TOGGLE
+  // =====================================================
+
+  const handleWishlist = () => {
+    if (!book) return;
+
+    const wishlist =
+      JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    const alreadyWishlisted = wishlist.some(
+      (item) => String(item.bookId) === String(book.bookId)
     );
-  }
+
+    let updatedWishlist;
+
+    if (alreadyWishlisted) {
+      // REMOVE
+      updatedWishlist = wishlist.filter(
+        (item) => String(item.bookId) !== String(book.bookId)
+      );
+
+      setIsWishlisted(false);
+    } else {
+      // ADD
+      updatedWishlist = [...wishlist, book];
+
+      setIsWishlisted(true);
+    }
+
+    localStorage.setItem(
+      "wishlist",
+      JSON.stringify(updatedWishlist)
+    );
+  };
+
+  // =====================================================
+  // Loading
+  // =====================================================
 
   if (!book) {
     return (
-      <div className="flex min-h-[500px] flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold">
-          Book Not Found
-        </h1>
-
-        <Link
-          to="/"
-          className="mt-5 rounded-lg bg-amber-400 px-5 py-2 font-semibold"
-        >
-          Back Home
-        </Link>
+      <div className="flex min-h-[500px] items-center justify-center">
+        <span className="loading loading-spinner loading-lg text-green-500"></span>
       </div>
     );
   }
+
+  // =====================================================
+  // UI
+  // =====================================================
 
   return (
     <section className="py-10">
 
-      <div className="grid gap-8 rounded-2xl border border-gray-200 p-6 md:grid-cols-2">
+      <div className="grid gap-10 md:grid-cols-2">
 
-        {/* Image */}
-        <div className="flex min-h-[450px] items-center justify-center rounded-xl bg-gray-100 p-8">
+        {/* =================================================
+            BOOK IMAGE
+        ================================================= */}
+
+        <div className="flex min-h-[500px] items-center justify-center rounded-2xl bg-gray-100 p-8">
+
           <img
             src={book.image}
             alt={book.bookName}
-            className="max-h-[400px] w-auto object-contain"
+            className="max-h-[450px] max-w-full object-contain"
           />
+
         </div>
 
-        {/* Details */}
+        {/* =================================================
+            BOOK INFORMATION
+        ================================================= */}
+
         <div>
 
           <h1 className="font-serif text-4xl font-bold text-gray-900">
             {book.bookName}
           </h1>
 
-          <p className="mt-3 text-lg text-gray-600">
+          <p className="mt-4 text-lg text-gray-600">
             By : {book.author}
           </p>
 
-          {/* Tags */}
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="my-5 border-y border-gray-200 py-4">
+            <p className="text-gray-700">
+              {book.category}
+            </p>
+          </div>
+
+          <p className="leading-7 text-gray-600">
+            <span className="font-bold text-gray-800">
+              Review:
+            </span>{" "}
+            {book.review}
+          </p>
+
+          {/* TAGS */}
+
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+
+            <span className="font-bold">
+              Tag:
+            </span>
+
             {book.tags?.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-green-50 px-4 py-2 text-sm font-medium text-green-600"
+                className="rounded-full bg-green-50 px-4 py-2 text-sm text-green-600"
               >
-                {tag}
+                #{tag}
               </span>
             ))}
+
           </div>
 
-          {/* Review */}
-          <div className="mt-6">
-            <h2 className="text-xl font-bold">
-              Review
-            </h2>
+          {/* BOOK INFO */}
 
-            <p className="mt-2 leading-7 text-gray-600">
-              {book.review}
-            </p>
-          </div>
+          <div className="mt-6 space-y-3 border-t border-gray-200 pt-5">
 
-          {/* Book Information */}
-          <div className="mt-6 space-y-2 border-t border-dashed border-gray-300 pt-5">
-
-            <p>
-              <span className="font-semibold">
-                Category:
-              </span>{" "}
-              {book.category}
+            <p className="text-gray-600">
+              Number of Pages:
+              <span className="ml-3 font-semibold text-gray-900">
+                {book.totalPages}
+              </span>
             </p>
 
-            <p>
-              <span className="font-semibold">
-                Total Pages:
-              </span>{" "}
-              {book.totalPages}
+            <p className="text-gray-600">
+              Publisher:
+              <span className="ml-3 font-semibold text-gray-900">
+                {book.publisher}
+              </span>
             </p>
 
-            <p>
-              <span className="font-semibold">
-                Publisher:
-              </span>{" "}
-              {book.publisher}
+            <p className="text-gray-600">
+              Year of Publishing:
+              <span className="ml-3 font-semibold text-gray-900">
+                {book.yearOfPublishing}
+              </span>
             </p>
 
-            <p>
-              <span className="font-semibold">
-                Published:
-              </span>{" "}
-              {book.yearOfPublishing}
-            </p>
-
-            <p>
-              <span className="font-semibold">
-                Rating:
-              </span>{" "}
-              ⭐ {book.rating}
+            <p className="text-gray-600">
+              Rating:
+              <span className="ml-3 font-semibold text-gray-900">
+                {book.rating}
+              </span>
             </p>
 
           </div>
 
-          {/* Buttons */}
-          <div className="mt-7 flex flex-wrap gap-3">
+          {/* =================================================
+              BUTTONS
+          ================================================= */}
+
+          <div className="mt-7 flex gap-3">
+
+            {/* READ BUTTON */}
 
             <button
-              onClick={handleAddToListed}
-              disabled={isListed}
-              className={`rounded-lg px-5 py-3 font-semibold ${
-                isListed
-                  ? "cursor-not-allowed bg-gray-300 text-gray-600"
-                  : "bg-amber-400 text-gray-900 hover:bg-amber-300"
+              onClick={handleReadBook}
+              className={`rounded-lg border px-6 py-3 font-semibold transition ${
+                isRead
+                  ? "border-red-500 bg-red-500 text-white hover:bg-red-600"
+                  : "border-gray-300 bg-white text-gray-800 hover:bg-gray-100"
               }`}
             >
-              {isListed
-                ? "Already Listed"
-                : "Add to Listed Books"}
+              {isRead ? "Remove from Read" : "Read"}
             </button>
 
+            {/* WISHLIST BUTTON */}
+
             <button
-              onClick={handleMarkAsRead}
-              disabled={isRead}
-              className={`rounded-lg px-5 py-3 font-semibold ${
-                isRead
-                  ? "cursor-not-allowed bg-gray-300 text-gray-600"
-                  : "bg-green-500 text-white hover:bg-green-600"
+              onClick={handleWishlist}
+              className={`rounded-lg px-6 py-3 font-semibold text-white transition ${
+                isWishlisted
+                  ? "bg-red-500 hover:bg-red-600"
+                  : "bg-cyan-500 hover:bg-cyan-600"
               }`}
             >
-              {isRead ? "Already Read" : "Mark as Read"}
+              {isWishlisted
+                ? "Remove from Wishlist"
+                : "Wishlist"}
             </button>
 
           </div>
