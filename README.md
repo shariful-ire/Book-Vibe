@@ -14,8 +14,8 @@
 
 ## 🌐 Live Project
 
-- **Live Website:** Add your live website URL here
-- **GitHub Repository:** Add your GitHub repository URL here
+- **[Live Website:](https://reliable-cascaron-f6772d.netlify.app/)**
+- **[GitHub Repository:](https://github.com/shariful-ire/Book-Vibe)** 
 
 ---
 
