@@ -1,34 +1,34 @@
-import React from 'react';
-import NavBar from './components/navBar/NavBar';
-import Footer from './components/footerSection/Footer';
+import React, { Suspense } from "react";
+import { Outlet } from "react-router-dom";
 
-
-import "./index.css";
-import { Outlet } from 'react-router';
-
-import { useEffect,useState } from 'react';
-import ErrorPage from './pages/errorPage/ErrorPage';
+import NavBar from "./components/navBar/NavBar";
+import Footer from "./components/footerSection/Footer";
 
 const App = () => {
-
-const bookPromise = fetch("/data/booksData.json")
-  .then(book => book.json());
-
-
-
-
-
   return (
-    <div> 
-      <NavBar />
+    <div className="min-h-screen bg-white">
       
+      {/* Navbar */}
+      <NavBar />
 
-      <Outlet>
+      {/* Page Content */}
+      <main className="mx-auto w-11/12 max-w-6xl">
+        <Suspense
+          fallback={
+            <div className="flex min-h-[300px] items-center justify-center">
+              <p className="text-lg text-gray-600">
+                Loading...
+              </p>
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
+      </main>
 
-      </Outlet>
+      {/* Footer */}
       <Footer />
 
-      {/* <ErrorPage></ErrorPage> */}
     </div>
   );
 };
