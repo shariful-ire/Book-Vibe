@@ -2,6 +2,21 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const NavBar = () => {
+  const navLinks = [
+    {
+      name: "HOME",
+      path: "/",
+    },
+    {
+      name: "LISTED BOOKS",
+      path: "/listed-books",
+    },
+    {
+      name: "PAGES TO READ",
+      path: "/pages-to-read",
+    },
+  ];
+
   const navLinkClass = ({ isActive }) =>
     `rounded-xl px-4 py-2 font-medium transition-all duration-200 ${
       isActive
@@ -15,12 +30,8 @@ const NavBar = () => {
         {/* ================= Navbar Start ================= */}
         <div className="navbar-start">
           {/* Mobile Menu */}
-          <div className="dropdown">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost mr-2 lg:hidden"
-            >
+          <div className="dropdown lg:hidden">
+            <div tabIndex={0} role="button" className="btn btn-ghost mr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -39,7 +50,7 @@ const NavBar = () => {
 
             {/* Mobile Navigation */}
             <ul
-              tabIndex="-1"
+              tabIndex={0}
               className="
                 menu
                 menu-sm
@@ -56,23 +67,13 @@ const NavBar = () => {
                 shadow-xl
               "
             >
-              <li>
-                <NavLink to="/" className={navLinkClass}>
-                  HOME
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink to="/books" className={navLinkClass}>
-                  LISTED BOOKS
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink to="/pages-to-read" className={navLinkClass}>
-                  PAGES TO READ
-                </NavLink>
-              </li>
+              {navLinks.map((link) => (
+                <li key={link.path}>
+                  <NavLink to={link.path} className={navLinkClass}>
+                    {link.name}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -90,28 +91,19 @@ const NavBar = () => {
         {/* ================= Desktop Navigation ================= */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal items-center gap-2 px-1">
-            <li>
-              <NavLink to="/" className={navLinkClass}>
-                HOME
-              </NavLink>
-            </li>
-
-            <li>
-              <NavLink to="/books" className={navLinkClass}>
-                LISTED BOOKS
-              </NavLink>
-            </li>
-
-            <li>
-              <NavLink to="/pages-to-read" className={navLinkClass}>
-                PAGES TO READ
-              </NavLink>
-            </li>
+            {navLinks.map((link) => (
+              <li key={link.path}>
+                <NavLink to={link.path} className={navLinkClass}>
+                  {link.name}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* ================= Navbar End ================= */}
         <div className="navbar-end gap-2">
+          {/* Sign In */}
           <Link
             to="/signin"
             className="
@@ -132,6 +124,7 @@ const NavBar = () => {
             Sign In
           </Link>
 
+          {/* Sign Up */}
           <Link
             to="/signup"
             className="

@@ -1,41 +1,31 @@
-// import React from "react";
-// import { createBrowserRouter } from "react-router";
-// import App from "../App";
-// import { BrowserRouter } from 'react-router-dom';
-// import Footer from "../Components/footerSection/Footer";
-// import BookCard from '../Components/Book/bookCard/BookCard';
+import { createBrowserRouter } from "react-router-dom";
 
-// const Route = () => {
-//   const router = createBrowserRouter([
+import App from "../App";
+import ErrorPage from "../pages/errorPage/ErrorPage";
+import PagesToRead from "../pages/pages-to-read/PagesToRead";
+import ListedBooks from "../pages/listedBooks/ListedBooks";
 
-//     {
-//         path: "../Components//Book/BookCard.jsx",
-//         Component: BookCard,
-//     },
-//     {
-//         path: "../Components/",
-//         component: 
-//     },
-//     {
-//         path: "../Components/",
-//         component: 
-//     },
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorPage />,
 
-//     {
-//         path: "../Components/",
-//         component: 
-//     },
-//     {
-//         path: "../Components/",
-//         component: 
-//     },
-//     {
-//         path: "../Components/",
-//         component: 
-//     },
-    
-//   ])
+    children: [
+      {
+        index: true,
+        element: <div>Home Page</div>,
+      },
+      {
+        path: "listed-books",
+        element: <ListedBooks />,
+      },
+      {
+        path: "pages-to-read",
+        element: <PagesToRead />,
+      },
+    ],
+  },
+]);
 
-// };
-
-// export default Route;
+export default router;
