@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import App from "../App";
-import HomePage from "../pages/homePage/HomePage";
 import ErrorPage from "../pages/errorPage/ErrorPage";
-import PagesToRead from "../pages/pages-to-read/PagesToRead";
+import HomePage from "../pages/homePage/HomePage";
 import ListedBooks from "../pages/listedBooks/ListedBooks";
+import PagesToRead from "../pages/pages-to-read/PagesToRead";
+import BookDetails from "../components/book/bookDetails/BookDetails";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,13 @@ const router = createBrowserRouter([
         element: <PagesToRead />,
       },
 
+      // Dynamic Book Details
+      {
+        path: "book/:bookId",
+        element: <BookDetails />,
+      },
+
+      // 404
       {
         path: "*",
         element: <ErrorPage />,
